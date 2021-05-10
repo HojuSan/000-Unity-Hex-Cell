@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class HexGrid : MonoBehaviour {
+public class HexGrid : MonoBehaviour 
+{
 
 	public int width = 6;
 	public int height = 6;
@@ -12,11 +13,12 @@ public class HexGrid : MonoBehaviour {
 	HexCell[] cells;
 
 	Canvas gridCanvas;
+	HexMesh hexMesh;
 
-	//grid creation
 	void Awake () 
 	{
 		gridCanvas = GetComponentInChildren<Canvas>();
+		hexMesh = GetComponentInChildren<HexMesh>();
 
 		cells = new HexCell[height * width];
 
@@ -29,6 +31,11 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
+	void Start () 
+	{
+		hexMesh.Triangulate(cells);
+	}
+
 	void CreateCell (int x, int z, int i) 
 	{
 		Vector3 position;
@@ -36,7 +43,7 @@ public class HexGrid : MonoBehaviour {
 		position.y = 0f;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-		HexCell cell = Instantiate<HexCell>(cellPrefab);
+		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);	//this confuses me
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 
@@ -44,6 +51,6 @@ public class HexGrid : MonoBehaviour {
 		label.rectTransform.SetParent(gridCanvas.transform, false);
 		label.rectTransform.anchoredPosition =
 			new Vector2(position.x, position.z);
-		label.text = x.ToString() + "\n" + z.ToString();	//coordinates to string
+		label.text = x.ToString() + "\n" + z.ToString();
 	}
 }
