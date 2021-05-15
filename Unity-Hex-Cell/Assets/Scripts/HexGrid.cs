@@ -31,6 +31,7 @@ public class HexGrid : MonoBehaviour
 		}
 	}
 
+	//start triggers after awake, triangulate creates hexagons
 	void Start () 
 	{
 		hexMesh.Triangulate(cells);
